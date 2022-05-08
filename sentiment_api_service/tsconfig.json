@@ -8,8 +8,8 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "rest_api_service/src",
+    "baseUrl": "src",
     "outDir": "dist",
   },
-  "include": ["rest_api_service/src"]
+  "include": ["src"]
 }

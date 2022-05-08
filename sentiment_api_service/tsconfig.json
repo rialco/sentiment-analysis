@@ -8,8 +8,8 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "outDir": "dist",
   },
-  "include": ["src"]
+  "include": ["./src"]
 }

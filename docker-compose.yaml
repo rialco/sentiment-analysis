@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+
+  postgres:
+    container_name: sentiment-db
+    image: postgres:14.1-alpine3.15
+    restart: always
+    environment:
+      POSTGRES_USER: pf
+      POSTGRES_PASSWORD: pf
+      POSTGRES_DB: sentiments
+    ports:
+      - "8000:5432"
+
+  sentiment-api:
+    container_name: sentiment-api
+    build: ./
+    command: node /app/dist/start.js
+    restart: always
+    ports:  
+      - "3000:3000"
+    depends_on:
+      - postgres

@@ -1,6 +1,6 @@
-FROM node:16.14.2-alpine3.15
+FROM node:16.15.0-alpine3.15
 
 WORKDIR /app
 COPY . .
-RUN npm i 
+RUN npm install 
 RUN npm run build

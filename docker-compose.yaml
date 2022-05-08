@@ -11,15 +11,17 @@ services:
       POSTGRES_PASSWORD: pf
       POSTGRES_DB: sentiments
     ports:
-      - "5433:5432"
+      - "5434:5432"
 
   redis:
     container_name: event-stream
-    image: redis:7.0.0-alpine3.15
+    build: ./stream_service
     restart: always
     ports:
       - '6379:6379'
-    command: redis-server --save 60 1 --loglevel warning --requirepass pfinal
+    expose:
+      - '6379'
+    command: redis-server /app/redis.conf 
 
   sentiment-api-service:
     container_name: sentiment-api
@@ -29,18 +31,19 @@ services:
     ports:  
       - "3000:3000"
     depends_on:
-      - postgres
-      - redis  
+      - redis
+      - postgres  
 
   neural-network:
     container_name: neural-network
-    build: ./neural_network
+    build: ./neural_network_service
     restart: always
     ports:
       - '5000:5000'
     depends_on:
-      - postgres
       - redis
+      - postgres
+      - sentiment-api-service
     environment:
       REDIS_HOST: redis
       REDIS_PORT: 6379

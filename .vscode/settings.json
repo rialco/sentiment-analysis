@@ -1,0 +1,5 @@
+{
+    "eslint.workingDirectories": [
+      "./sentiment_api_service",
+    ]
+}

@@ -1,4 +1,4 @@
-./sentiment_api_service/node_modules
-./sentiment_api_service/dist
-./sentiment_api_service/.env
+/sentiment_api_service/node_modules
+/sentiment_api_service/dist
+/sentiment_api_service/.env
 sentiments_db

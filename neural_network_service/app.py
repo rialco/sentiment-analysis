@@ -25,7 +25,7 @@ def get_data(redis_connection):
     while True:
         try:
             resp = redis_connection.xread(
-                {stream_key: b"$"}, count=1, block=sleep_ms)
+                {stream_key: "$"}, count=1, block=sleep_ms)
             if resp:
                 key, messages = resp[0]
                 last_id, data = messages[0]

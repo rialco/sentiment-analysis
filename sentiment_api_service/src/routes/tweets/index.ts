@@ -1,6 +1,7 @@
+import { Request, Response, Router } from 'express';
+
 import { TweetsByTopicGetController } from '../../controllers/TweetsByTopicGetController.js';
 import { TweetsByUsernameGetController } from '../../controllers/TweetsByUsernameGetController.js';
-import { Request, Response, Router } from 'express';
 
 const route = Router();
 

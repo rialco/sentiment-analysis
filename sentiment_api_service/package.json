@@ -13,7 +13,8 @@
     "build:di": "copy 'src/**/*.{json, yaml}' dist/src",
     "build:clean": "rm -r dist; exit 0",
     "dev": "nodemon --watch src --exec 'ts-node-esm' .",
-    "dev:build": "npm run build && node ./dist/start.js"
+    "dev:build": "npm run build && node ./dist/start.js",
+    "migrate": "./node_modules/.bin/node-pg-migrate --tsconfig='./tsconfig.json' "
   },
   "nodemonConfig": {
     "ext": "ts, js, json"
@@ -32,6 +33,7 @@
     "ioredis": "^5.0.4",
     "jest": "^27.5.1",
     "node-fetch": "^3.2.4",
+    "node-pg-migrate": "^6.2.1",
     "pg": "^8.7.3",
     "swagger-jsdoc": "^6.2.0",
     "swagger-ui-express": "^4.3.0",

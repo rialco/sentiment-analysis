@@ -10,11 +10,11 @@
   "scripts": {
     "build": "npm run build:clean && npm run build:tsc",
     "build:tsc": "tsc -p tsconfig.json",
-    "build:di": "copy 'src/**/*.{json, yaml}' dist/src",
     "build:clean": "rm -r dist; exit 0",
-    "dev": "nodemon --watch src --exec 'ts-node-esm' .",
+    "dev": "nodemon --watch src --exec 'ts-node' .",
     "dev:build": "npm run build && node ./dist/start.js",
-    "migrate": "./node_modules/.bin/node-pg-migrate --tsconfig='./tsconfig.json' "
+    "migrate": "ts-node node_modules/.bin/node-pg-migrate -j ts --tsconfig='./tsconfig.json' ",
+    "migrate:build": "./node_modules/.bin/node-pg-migrate -m ./dist/migrations"
   },
   "nodemonConfig": {
     "ext": "ts, js, json"
@@ -27,6 +27,7 @@
     "@types/uuid-validate": "^0.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
+    "esm": "^3.2.25",
     "express": "^4.17.3",
     "helmet": "^5.0.2",
     "http-status": "^1.5.1",

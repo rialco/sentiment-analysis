@@ -34,8 +34,10 @@ def get_data(redis_connection):
                 last_id, data = messages[0]
                 print('REDIS ID: ', last_id)
                 print('            --> ', data)
+                for k, v in data.items():
+                    print(v.decode())
         except ConnectionError as e:
-            print('(ERROR) Failed to connec to redis:'.format(e))
+            print('(ERROR) Failed to connec to redis: ', format(e))
         except:
             print('What happened')
 

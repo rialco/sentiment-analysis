@@ -1,7 +1,6 @@
 version: "3.7"
 
 services:
-
   postgres:
     container_name: sentiment-db
     image: postgres:14.1-alpine3.15
@@ -56,6 +55,3 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: pfinal
-
-
-    

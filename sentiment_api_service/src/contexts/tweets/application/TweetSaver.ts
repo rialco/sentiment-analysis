@@ -1,11 +1,11 @@
 import { Tweet } from "../domain/Tweet.js";
 import { PgTweetRepository } from "../infrastructure/PgTweetRepository.js";
 
-export class TweetCreator {
+export class TweetSaver {
   private repository: PgTweetRepository;
 
-  constructor(repository: PgTweetRepository) {
-    this.repository = repository;
+  constructor() {
+    this.repository = new PgTweetRepository();
   }
 
   async run(tweet: Tweet): Promise<void> {

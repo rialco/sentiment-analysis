@@ -11,6 +11,7 @@
     "build": "npm run build:clean && npm run build:tsc",
     "build:tsc": "tsc -p tsconfig.json",
     "build:clean": "rm -r dist; exit 0",
+    "build:container": "npm run migrate:build up && npm run build && node ./dist/src/start.js",
     "dev": "nodemon --watch src --exec 'ts-node' .",
     "dev:build": "npm run build && node ./dist/start.js",
     "migrate": "ts-node node_modules/.bin/node-pg-migrate -j ts --tsconfig='./tsconfig.json' ",

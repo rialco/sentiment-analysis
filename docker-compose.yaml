@@ -13,11 +13,10 @@ services:
     ports:
       - "5434:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: ["CMD-SHELL", "pg_isready -U pf -d sentiments"]
       interval: 10s
       timeout: 5s
       retries: 3
-
 
   redis:
     container_name: event-stream
@@ -32,7 +31,7 @@ services:
   sentiment-api-service:
     container_name: sentiment-api
     build: ./sentiment_api_service
-    command: npm run migrate:build up & node /app/dist/start.js
+    command: npm run build:container
     restart: always
     ports:  
       - "3000:3000"

@@ -5,7 +5,7 @@ export const shorthands = undefined;
 
 export const up = (pgm: MigrationBuilder): void => {
   pgm.sql(`
-    CREATE TABLE tweets-analysis (
+    CREATE TABLE tweets_analysis (
         id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
         tweet_id BIGINT REFERENCES tweets(id),
         sentiment TEXT,

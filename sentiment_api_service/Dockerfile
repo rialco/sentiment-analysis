@@ -6,4 +6,5 @@ WORKDIR /app
 COPY . .
 RUN npm install -g npm@8.10.0
 RUN npm install 
+COPY modules_fix/runner.js ./node_modules/node-pg-migrate/dist/runner.js
 RUN npm run build

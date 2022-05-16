@@ -11,7 +11,7 @@ export const up = (pgm: MigrationBuilder): void => {
         mention TEXT,
         city TEXT,
         country TEXT,
-        user TEXT,
+        username TEXT,
         follower_count INTEGER,
         retweet_count INTEGER,
         favorite_count INTEGER,

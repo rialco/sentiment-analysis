@@ -5,12 +5,12 @@ from model import Model
 
 stream_key = 'events'
 
+nnModel = Model()
+
 
 def waitForServices():
     time.sleep(5)
     print('(INFO) Neural network service starting...')
-    modelo = Model()
-    modelo.classify('patin')
     connection = connect_to_redis()
     get_data(connection)
 

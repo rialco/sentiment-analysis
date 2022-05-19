@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
+
 import { Tweet } from '../domain/Tweet.js';
-import fs from 'fs/promises';
+import { getLocalTweets } from '../utils/localTweets.js';
 
 interface twitterAPIResponse {
   results: Tweet[];
@@ -30,7 +31,7 @@ export class TweetFetcher {
 
     const environment = process.env.ENVIRONMENT;
 
-    if (environment !== 'TESTING') {
+    if (environment === 'PRODUCTION') {
       console.log('Twitter api called');
       const res = await fetch(searchUrl, {
         method: 'POST',
@@ -44,15 +45,7 @@ export class TweetFetcher {
       return tweets.results;
     }
 
-    try {
-      console.log('Local tweets called');
-      const tweetsFile = await fs.readFile('./twitter-response.json', 'utf-8');
-      const res = JSON.parse(tweetsFile);
-      return this.mapTweets(res.results, username) as unknown as Tweet[];
-    } catch(e) {
-      console.log(e);
-      return [];
-    }
+    return getLocalTweets();
   }
   
   async fetchByTopic(topic: string): Promise<Tweet[]> {
@@ -65,7 +58,7 @@ export class TweetFetcher {
 
     const environment = process.env.ENVIRONMENT;
 
-    if (environment !== 'TESTING') {
+    if (environment === 'PRODUCTION') {
       console.log('Twitter api called');
       const res = await fetch(searchUrl, {
         method: 'POST',
@@ -79,14 +72,6 @@ export class TweetFetcher {
       return tweets.results;
     }
 
-    try {
-      console.log('Local tweets called');
-      const tweetsFile = await fs.readFile('./twitter-response.json', 'utf-8');
-      const res = JSON.parse(tweetsFile);
-      return res.results as unknown as Tweet[];
-    } catch(e) {
-      console.log(e);
-      return [];
-    }
+    return getLocalTweets();
   } 
 }

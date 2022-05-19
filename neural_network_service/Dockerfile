@@ -10,6 +10,8 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN pip install --upgrade pip
 RUN pip install redis
+RUN pip install keras
+RUN pip install nltk
 
 COPY . .
 

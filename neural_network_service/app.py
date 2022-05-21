@@ -8,7 +8,7 @@ stream_key = 'events'
 
 def waitForServices():
     time.sleep(5)
-    print('(INFO) Neural network service starting...')
+    print('(INFO) ==> Neural network service starting...')
     connection = connect_to_redis()
     get_data(connection)
 
@@ -35,9 +35,9 @@ def get_data(redis_connection):
                 for k, v in data.items():
                     print(v.decode())
         except ConnectionError as e:
-            print('(ERROR) Failed to connec to redis: ', format(e))
+            print('(ERROR) ==> Failed to connec to redis: ', format(e))
         except:
-            print('What happened')
+            print('(ERROR) ==> unknwon error ')
 
 
 if __name__ == '__main__':

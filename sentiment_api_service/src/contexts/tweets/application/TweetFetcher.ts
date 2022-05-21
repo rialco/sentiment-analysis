@@ -9,7 +9,7 @@ interface tweetAPIResponse {
   id: string;
   text: string;
   user: {
-    name: string;
+    screen_name: string;
     followers_count: number;
   };
   place: {
@@ -25,17 +25,23 @@ interface tweetAPIResponse {
 
 interface TwitterAPIResponse {
   results: tweetAPIResponse[];
+  next: string;
+}
+
+interface fetchResponse {
+  tweets: Tweet[];
+  next: string;
 }
 
 export class TweetFetcher {
-  parseTweets(res: TwitterAPIResponse, mention: string): Tweet[] {
-    return res.results.map((t: tweetAPIResponse) => {
+  parseTweets(res: TwitterAPIResponse, mention: string): fetchResponse {
+    const tweets = res.results.map((t: tweetAPIResponse) => {
       const content = t.extended_tweet?.full_text || t.text;
       const cleanedContent = getCleanedTweet(t);
 
       const tweet = Tweet.fromPrimitives({
         id: t.id,
-        author: t.user.name,
+        author: t.user.screen_name,
         mention: mention,
         content: content,
         city: t.place.name,
@@ -44,18 +50,27 @@ export class TweetFetcher {
         favoriteCount: t.favorite_count,
         tweetDate: t.created_at,
         cleanedContent: cleanedContent,
-        createdAt: '',
       });
+      console.log(tweet);
       return tweet;
     });
+
+    return {
+      tweets: tweets,
+      next: res.next,
+    };
   }
 
-  async fetchByUsername(username: string): Promise<Tweet[]> {
+  async fetchByUsername(
+    username: string,
+    nextToken?: string,
+  ): Promise<fetchResponse> {
     const baseUrl = 'https://api.twitter.com/1.1/tweets/search/30day/';
     const searchUrl = baseUrl + 'rialco.json';
     const bearerToken = 'Bearer ' + process.env.BEARER_TOKEN;
     const query = {
       query: `(@${username}) place_country:CO lang:es`,
+      next: nextToken,
     };
 
     const environment = process.env.ENVIRONMENT;
@@ -78,12 +93,16 @@ export class TweetFetcher {
     return this.parseTweets(localTweets, username);
   }
 
-  async fetchByTopic(topic: string): Promise<Tweet[]> {
+  async fetchByTopic(
+    topic: string,
+    nextToken?: string,
+  ): Promise<fetchResponse> {
     const baseUrl = 'https://api.twitter.com/1.1/tweets/search/30day/';
     const searchUrl = baseUrl + 'rialco.json';
     const bearerToken = 'Bearer ' + process.env.BEARER_TOKEN;
     const query = {
       query: `(#${topic}) place_country:CO lang:es`,
+      next: nextToken,
     };
 
     const environment = process.env.ENVIRONMENT;

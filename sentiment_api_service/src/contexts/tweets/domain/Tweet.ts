@@ -51,7 +51,6 @@ export class Tweet {
     retweetCount: number;
     favoriteCount: number;
     tweetDate: string;
-    createdAt: string;
     cleanedContent: string;
   }): Tweet {
     return new Tweet(
@@ -63,23 +62,23 @@ export class Tweet {
       plainData.retweetCount,
       plainData.favoriteCount,
       new Date(plainData.tweetDate),
-      new Date(plainData.createdAt),
+      new Date(),
       plainData.cleanedContent,
     );
   }
 
   toPrimitives() {
     return {
-      id: this.id.value,
-      author: this.author,
-      mention: this.mention,
+      id: this.id.value.toString(),
+      author: this.author.username,
+      mention: this.mention.username,
       content: this.content.value,
-      city: this.city,
+      city: this.city.value,
       country: this.country,
       retweetCount: this.retweetCount,
       favoriteCount: this.favoriteCount,
-      tweetDate: this.tweetDate,
-      createdAt: this.createdAt,
+      tweetDate: this.tweetDate.toDateString(),
+      createdAt: this.createdAt.toDateString(),
       cleanedContent: this.cleanedContent,
     };
   }

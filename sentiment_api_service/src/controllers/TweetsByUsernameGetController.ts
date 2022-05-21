@@ -11,9 +11,14 @@ export class TweetsByUsernameGetController implements Controller {
 
     try {
       const { username } = req.params;
-      const tweets = await tweetFetcher.fetchByUsername(username);
-      await tweetSaver.runBatch(tweets);
-      res.send({ results: tweets });
+      const { nextToken } = req.query;
+      const fetchedTweets = await tweetFetcher.fetchByUsername(
+        username,
+        nextToken as string,
+      );
+      await tweetSaver.runBatch(fetchedTweets.tweets);
+      const tweetsJson = fetchedTweets.tweets.map((t) => t.toPrimitives());
+      res.send({ nextToken: fetchedTweets.next, tweets: tweetsJson });
     } catch (error) {
       res.status(400).send('(ERROR) ==> Fail to fetch tweets');
     }

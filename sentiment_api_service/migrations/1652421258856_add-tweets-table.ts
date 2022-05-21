@@ -6,8 +6,9 @@ export const shorthands = undefined;
 export const up = (pgm: MigrationBuilder): void => {
   pgm.sql(`
     CREATE TABLE tweets (
-        id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        id BIGINT PRIMARY KEY,
         content TEXT,
+        cleaned_content TEXT,
         mention TEXT,
         city TEXT,
         country TEXT,
@@ -15,7 +16,6 @@ export const up = (pgm: MigrationBuilder): void => {
         follower_count INTEGER,
         retweet_count INTEGER,
         favorite_count INTEGER,
-        external_id BIGINT,
         tweeted_at TIMESTAMP,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );

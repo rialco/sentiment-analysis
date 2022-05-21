@@ -1,6 +1,4 @@
-FROM python:3.10.4-alpine3.15
-
-RUN apk add --no-cache bash
+FROM python:3.9.13-slim
 
 WORKDIR /app
 
@@ -12,6 +10,8 @@ RUN pip install --upgrade pip
 RUN pip install redis
 RUN pip install keras
 RUN pip install nltk
+RUN pip install numpy
+RUN pip install tensorflow
 
 COPY . .
 

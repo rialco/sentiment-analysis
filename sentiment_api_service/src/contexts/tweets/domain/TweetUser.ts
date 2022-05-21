@@ -1,7 +1,9 @@
-import { StringValueObject } from "../../../contexts/shared/domain/value-object/StringValueObject.js";
+export class TweetUser {
+  readonly username: string;
+  readonly followerCount: number;
 
-export class TweetUser extends StringValueObject{
-  constructor(value: string) {
-    super(value);
+  constructor(username: string, followerCount: number) {
+    this.username = username;
+    this.followerCount = followerCount;
   }
 }

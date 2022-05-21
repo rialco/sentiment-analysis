@@ -25,5 +25,5 @@ export class PostgresPool {
 
 export const pgPool = new PostgresPool({
   connectionString: process.env.DATABASE_URL,
-  ssl: false
+  ssl: false,
 });

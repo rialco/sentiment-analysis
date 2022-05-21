@@ -1,6 +1,6 @@
-import { Uuid } from "../../../contexts/shared/domain/value-object/Uuid.js";
+import { BigNumberValueObject } from '../../shared/domain/value-object/BigIntValueObject.js';
 
-export class TweetId extends Uuid {
+export class TweetId extends BigNumberValueObject {
   constructor(value: string) {
     super(value);
   }

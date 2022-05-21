@@ -1,11 +1,9 @@
 import time
 from redis import Redis
 from os import environ
-from model import Model
+# from model import Model
 
 stream_key = 'events'
-
-nnModel = Model()
 
 
 def waitForServices():

@@ -1,5 +1,5 @@
-import { Tweet } from "./Tweet.js";
+import { Tweet } from './Tweet.js';
 
 export interface TweetRepository {
-    save(tweet: Tweet): Promise<void>;
+  save(tweet: Tweet): Promise<void>;
 }

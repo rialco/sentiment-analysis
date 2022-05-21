@@ -1,5 +1,5 @@
-import { Tweet } from "../domain/Tweet.js";
-import { PgTweetRepository } from "../infrastructure/PgTweetRepository.js";
+import { Tweet } from '../domain/Tweet.js';
+import { PgTweetRepository } from '../infrastructure/PgTweetRepository.js';
 
 export class TweetSaver {
   private repository: PgTweetRepository;
@@ -10,5 +10,9 @@ export class TweetSaver {
 
   async run(tweet: Tweet): Promise<void> {
     await this.repository.save(tweet);
+  }
+
+  async runBatch(tweets: Tweet[]): Promise<void> {
+    await this.repository.saveBatch(tweets);
   }
 }

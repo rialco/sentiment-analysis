@@ -1,18 +1,25 @@
-import numpy as np
-from nltk.corpus import cess_esp as cess
-from nltk import UnigramTagger as ut
 from nltk import BigramTagger as bt
+from nltk import UnigramTagger as ut
+from nltk.corpus import cess_esp as cess
+from nltk.corpus import stopwords
+import numpy as np
+import nltk
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('cess_esp')
+nltk.download('averaged_perceptron_tagger')
+
 
 categories = [-1, 0, 1]
 
 
-def create_word_embedding(comments, add_pos_tags=False):
-    '''
-    :param comments: List of lists containing all the comments to do word embedding
-    :param add_pos_tags: Flag to add parts-of-speech tags to the comment
-    :return encoded_comments: Comments in a vectorized list of lists.
-    '''
+def get_class_tupple(input):
+    classT = 'NEG'
+    return (input, classT)
 
+
+def create_word_embedding(add_pos_tags=True):
+    comments = ['hello, how are you?', 'whats your name?']
     count = 0
     word_embedding = {}
     encoded_comments = []
@@ -27,6 +34,8 @@ def create_word_embedding(comments, add_pos_tags=False):
             comment = [ele for word_tuple in nltk.pos_tag(
                 comment) for ele in word_tuple]
 
+        print(comment)
+
         # Creating mapping: { "this": 1, "is": 2, ... } & encode each comment
         encoded_comment = []
         for word in comment:
@@ -36,7 +45,7 @@ def create_word_embedding(comments, add_pos_tags=False):
             encoded_comment.append(word_embedding[word])
         encoded_comments.append(encoded_comment)
 
-    return encoded_comments
+    print(encoded_comments)
 
 
 def load_encoded_data(comments, data_split=0.8):

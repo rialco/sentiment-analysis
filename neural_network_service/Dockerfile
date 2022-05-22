@@ -11,6 +11,7 @@ RUN pip install redis
 RUN pip install keras
 RUN pip install nltk
 RUN pip install numpy
+RUN pip install pandas
 RUN pip install tensorflow
 
 COPY . .

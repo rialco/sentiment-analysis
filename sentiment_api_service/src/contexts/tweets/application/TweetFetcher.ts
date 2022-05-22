@@ -51,7 +51,6 @@ export class TweetFetcher {
         tweetDate: t.created_at,
         cleanedContent: cleanedContent,
       });
-      console.log(tweet);
       return tweet;
     });
 

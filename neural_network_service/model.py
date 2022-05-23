@@ -8,11 +8,11 @@ from utils import load_encoded_data, parseInputs
 
 
 class Model:
-    max_words, batch_size, maxlen, epochs = 2400, 32, 70, 100
-    embedding_dims, filters, kernel_size, hidden_dims = 5, 25, 5, 20
+    max_words, batch_size, maxlen, epochs = 4220, 64, 70, 100
+    embedding_dims, filters, kernel_size, hidden_dims = 20, 100, 5, 50
 
     # Generate split training and testing data (80% training, 20% testing)
-    x_train, x_test, y_train, y_test = load_encoded_data(data_split=0.85)
+    x_train, x_test, y_train, y_test = load_encoded_data(data_split=0.75)
 
     # Determine the number of categories + default(i.e. sentence types)
     num_classes = np.max(y_train) + 1
@@ -28,15 +28,20 @@ class Model:
     early_stopping_monitor = EarlyStopping(
         monitor='val_loss',
         min_delta=0.001,
-        patience=10,
+        patience=7,
         verbose=0,
         mode='min',
         restore_best_weights = True
     )
-    mcp_save = ModelCheckpoint('./best_models/md.ep{epoch:02d}-loss{val_loss:.2f}-acc{val_accuracy:.2f}.hdf5', save_best_only=True, monitor='val_loss', mode='min')
-    reduce_lr_loss = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=7, verbose=1, min_delta=0.0001, mode='min')
+    mcp_save = ModelCheckpoint(
+        './best_models/md.ep{epoch:02d}-loss{val_loss:.2f}-acc{val_accuracy:.2f}.hdf5', 
+        save_best_only=True,
+        monitor='val_loss',
+        mode='min'
+    )
+    reduce_lr_loss = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1, min_delta=0.0001, mode='min')
 
-    print(x_train)
+    # print(x_train)
 
     def __init__(self) -> None:
         self.model = Sequential()
@@ -67,11 +72,30 @@ class Model:
 
     def trainModel(self):
         cbs = [self.early_stopping_monitor, self.mcp_save, self.reduce_lr_loss]
+
         self.model.fit(self.x_train, self.y_train, batch_size=self.batch_size,
                        epochs=self.epochs, validation_data=(self.x_test, self.y_test), callbacks=cbs)
         score = self.model.evaluate(self.x_test, self.y_test, batch_size=self.batch_size)
+        prediction = self.model.predict(self.x_test)
+
         print(self.model.metrics_names)
         print(score)
+
+        prob_neg = 0
+        prob_pos = 0
+        prob_net = 0
+        for p in prediction:
+            prob_net += p[0]
+            prob_neg += p[1]
+            prob_pos += p[2]
+        
+        prob_neg = prob_neg / len(prediction)
+        prob_net = prob_net / len(prediction)
+        prob_pos = prob_pos / len(prediction)
+        
+        print('prob neutral:', prob_net)
+        print('prob negativa:', prob_neg)
+        print('prob positiva:', prob_pos)
 
 
 if __name__ == '__main__':
@@ -84,13 +108,14 @@ if __name__ == '__main__':
     "ese canelo es un pesimo boxeador, no sabe nada del deporte", 
     "que buenas noticias, te doy las gracias por eso",
     "Que buena persona eres, te felicito por tu labor y por tu dedicacion, te doy las gracias por tu excelente trabajo",
-    "este es un tweet de prueba, ese candidato es un malparido porque no sabe que esta haciendo con el pais. Esta empeorando la situacion economica de todos los colombianos y tiene el descaro de decir que le va hacer bien al pais cuando todo lo que ha hecho ha sido pesimo y de mala calidad"
+    "este es un tweet de prueba, ese candidato es un malparido porque no sabe que esta haciendo con el pais. Esta empeorando la situacion economica de todos los colombianos y tiene el descaro de decir que le va hacer bien al pais cuando todo lo que ha hecho ha sido pesimo y de mala calidad",
+    "que hermosa persona eres, te quiero como amigo y te amo como hermano"
     ])
+
     x_predictions = pad_sequences(x_predictions, maxlen=70, padding='post')
     prediction = classifier.model.predict(x_predictions)
 
-    
-    savedModel = keras.models.load_model('./best_models/md.ep23-loss0.60-acc0.82.hdf5')
+    savedModel = keras.models.load_model('./best_models/POTENTIAL_MODEL.ep29-loss0.62-acc0.84.hdf5')
     savedPred = savedModel.predict(x_predictions)
 
     print( 'New predictions', prediction.argmax(axis=-1))

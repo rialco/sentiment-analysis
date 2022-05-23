@@ -53,14 +53,13 @@ def load_encoded_data( data_split = 0.8 ):
     data = pd.read_csv('./training.csv')
     # data = data.sample(frac=1).reset_index(drop=True)
     classified_tweets = data.values.tolist()
-    #random.shuffle(classified_tweets)
+    
+    random.shuffle(classified_tweets)
 
     tweets, categories = [], []
     for tweet, category in classified_tweets:
         tweets.append(tweet)
         categories.append(category)
-        print(tweet)
-        print(category)
     
     # Word + Punctuation + POS Tags embedding
     encoded_tweets = create_word_embedding(tweets, add_pos_tags = True)

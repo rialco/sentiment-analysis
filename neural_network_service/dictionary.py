@@ -37,7 +37,7 @@ palabras_negativas = [
 'titere', 'caga', 'narco', 'payasín', 'susto', 'robar', 'criminales', 'mentira', 'corrupto', 'paramilitar', 'culo', 'prepago', 'uribestia',
 'resentida', 'rogados', 'inhabilitado', 'golpes', 'traquetos', 'ilegal', 'panico', 'mafias', 'violando', 'violación', 'violacion', 'ignorante',
 'chismoso', 'complice', 'chimbo', 'pendejadas', 'fracasado', 'fracasada', 'enfermedad', 'muerte', 'narcotráfico', 'asesinos', 'destrucción',
-'hambre', 'mierda', 'mrd', 'bobo', 'pobres', 'felices', 'secuestros', 'secuestro', 'desaparecidos', 'insoportables', 'insoportable', 'pésimo', 'pesimo',
+'hambre', 'mierda', 'mrd', 'bobo', 'pobres', 'secuestros', 'secuestro', 'desaparecidos', 'insoportables', 'insoportable', 'pésimo', 'pesimo',
 'populista', 'payaso', 'enemigo', 'hipocrita', 'hipócrita', 'bruto', 'bobos', 'paraco', 'paracos', 'bandido', 'perdedor', 'desafortunadamente',
 'contaminaron', 'lastima', 'insultar', 'incongruente', 'maltrato', 'terror', 'delincuencia', 'delincuente', 'loco', 'loca', 'descaro', 'descarada',
 'descarado', 'empeoro', 'empeorar', 'empeorando', 'subdito', 'subditos', 'mala', 'nada', 'putas', 'puta', 'estupidos', 'estúpidos',
@@ -45,7 +45,15 @@ palabras_negativas = [
 'undir', 'daño', 'dano', 'pesimas', 'pesimos', 'costosa', 'estafa', 'prepagos', 'golpe', 'atarbanes', 'arcaico', 'monda', 'verga', 'huevo', 'huevon',
 'gonorrea', 'chimba', 'perra', 'peor', 'desgraciado', 'desgraciada', 'desgracia', 'desagradable', 'basura', 'pirobo', 'piroba',
 'torcido', 'ladrones', 'ladron', 'vulgar', 'patan', 'hipócrita', 'falso', 'desleal', 'farsa', 'engañar', 'engaño', 'guerrillera', 'guerrilleras',
-'hjpta', 'qlo', 'descabezado', 'curtido', 'deslealtad', 'demencia', 'demente', 'vergüenza', 'miedo', 'desesperados', 'desesperado', 'sinvergüenza'
+'hjpta', 'qlo', 'descabezado', 'curtido', 'deslealtad', 'demencia', 'demente', 'vergüenza', 'miedo', 'desesperados', 'desesperado', 'sinvergüenza',
+'matarife', 'insultando', 'insulto', 'desprecio', 'desprecia', 'irresponsable', 'violento', 'diablo', 'derrotar', 'berrinche', 'ni',
+'error', 'marik', 'nefasto', 'guatepeor', 'peligroso', 'peligrosa', 'quemado', 'quemada', 'cacas', 'desempleo', 'desempleado', 'desempleada',
+'guerra', 'sucia', 'sarnoso', 'sarnosa', 'sucio', 'ofenden', 'ofender', 'secta', 'espantosa', 'espantoso', 'ñero', 'ñera',
+'cizaña', 'bruta', 'mafia', 'mafioso', 'mafiosa', 'perdedora', 'castigó', 'castigo', 'destruyó', 'destruyo', 'parapolitica', 'desmadre', 'desmedro',
+'joden', 'patetico', 'problema', 'mentiras', 'persecución', 'atracadores', 'atracador', 'politiquera', 'cinismo', 'cinico', 'cinica',
+'horrible', 'odio', 'armas', 'dictadores', 'fantasma', 'desinformación', 'babosa', 'falsa', 'fake', 'picardías', 'vándalos', 'vandalos', 'misera',
+'misero', 'miserable', 'miseria', 'saqueo', 'sandeces', 'crisis', 'inaceptable', 'inaudito', 'deplorables', 'atropellos', 'asustados',
+'porquerías', 'porquerias', 'adoctrinamiento', 'sangre'
 ]
 
 palabras_positivas = [
@@ -54,7 +62,7 @@ palabras_positivas = [
 'calificado', 'calma', 'capacitado', 'cariñoso', 'carisma', 'celebracion', 'celebración', 'compasion', 'compasión', 
 'comprensivo', 'confiable', 'conveniente', 'curioso', 'decente', 'delicada', 'delicado', 'destreza', 'dichoso', 'digno', 
 'dios', 'disciplina', 'divina', 'divino', 'dulce', 'dulzura', 'educada', 'educado', 'efectiva', 'efectivo', 'eficaz', 'eficiente', 
-'efusiva', 'efusivo', 'ejemplar', 'elegancia', 'elegante', 'elocuente', 'emocionada', 'emocionado', 'empatia', 'empatico', 'empatico', 
+'efusiva', 'efusivo', 'ejemplar', 'elegancia', 'elegante', 'elocuente', 'emocionada', 'emocionado', 'empatia', 'empatico', 'empatica', 
 'empatizar', 'enamorada', 'enamorado', 'encantada', 'encantado', 'energetica', 'energetico', 'equitativa', 'equitativo', 'especial', 
 'espectacular', 'esperanza', 'espiritu', 'estelar', 'estimulante', 'excelente', 'excelentes', 'excepcional', 'exito', 'exitosa', 'exitoso', 'fabuloso', 
 'facil', 'facilidad', 'factible', 'familia', 'fantastico', 'fascinante', 'felicitar', 'felicito', 'feliz', 'fortaleza', 'futuro', 'ganador', 'generosa', 
@@ -71,7 +79,14 @@ palabras_positivas = [
 'vivaz', 'afinidad', 'vida', 'amo', 'fuerza', 'fortaleza', 'dignidad', 'bendición', 'unidos', 'apoyo', 'sueño', 'anhelado', 'mejor', 'inclusión',
 'inclusion', 'sana', 'salud', 'salva', 'correctos', 'correcto', 'animo', 'bueno', 'conviccion', 'convicción', 'merecemos', 'transparente', 'quiero',
 'humildad', 'inteligencia', 'amas', 'honestidad', 'sensata', 'encanta', 'buena', 'buenas', 'gran', 'dedicacion', 'dedicación',
-'divinos', 'divinas', 'belleza', 'perfectas', 'perfectos', 'resistente', 'gusta', 
+'divinos', 'divinas', 'belleza', 'perfectas', 'perfectos', 'resistente', 'gusta', 'preparado', 'sensatez', 'sensato', 'honesto', 'honesta',
+'coraje', 'respeto', 'decencia', 'orgullosamente', 'alegria', 'alegría', 'disfrutamos', 'garantizo', 'garantizar',
+'construyendo', 'uniendo', 'libertad', 'real', 'felices', 'amando', 'inigualables', 'claro', 'rica', 'lindo', 'linda', 'lindura', 
+'preciosa', 'precioso', 'preciosos', 'preciosas', 'encanto', 'encantador', 'amable', 'parcero', 'bro', 'hermano', 'hermana',
+'valeroso', 'beneficio', 'beneficiario', 'paz', 'admiración', 'admiracion', 'respetuoso', 'respetuosa', 'oportunidades',
+'agradecimiento', 'progresas', 'progresar', 'progreso', 'posible', 'mejores', 'éxitos', 'equidad', 'igualdad', 'activismo',
+'productiva', 'productivo', 'resiliencia', 'celebrar', 'épicos', 'estelar', 'amada', 'amado', 'orgullosos', 'orgullosas', 'celebramos',
+'futuro'
 ]
 
 print ('Palabras negativas:', len(palabras_negativas))

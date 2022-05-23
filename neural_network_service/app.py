@@ -1,12 +1,13 @@
 import time
 from redis import Redis
 from os import environ
-# from model import Model
+from model import Model
 
 stream_key = 'events'
 
 
 def waitForServices():
+    model = Model();
     time.sleep(5)
     print('(INFO) ==> Neural network service starting...')
     connection = connect_to_redis()

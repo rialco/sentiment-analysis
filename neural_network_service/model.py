@@ -1,9 +1,14 @@
 import numpy as np
 import keras
-from keras.utils import pad_sequences
-from keras.models import Sequential
-from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
-from keras.layers import Dense, Dropout, Activation, Embedding, Conv1D, GlobalMaxPooling1D
+#### x86_64
+# from keras.utils import pad_sequences, to_categorical
+#### aarch64
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.utils import to_categorical
+####
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
+from tensorflow.keras.layers import Dense, Dropout, Activation, Embedding, Conv1D, GlobalMaxPooling1D
 from utils import load_encoded_data, parseInputs
 
 
@@ -18,8 +23,8 @@ class Model:
     num_classes = np.max(y_train) + 1
 
     # Vectorize the output sentence type classifcations to Keras readable format
-    y_train = keras.utils.to_categorical(y_train, num_classes)
-    y_test = keras.utils.to_categorical(y_test, num_classes)
+    y_train = to_categorical(y_train, num_classes)
+    y_test = to_categorical(y_test, num_classes)
 
     # Pad the input vectors to ensure a consistent length
     x_train = pad_sequences(x_train, maxlen=maxlen, padding='post')

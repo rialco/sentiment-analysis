@@ -12,7 +12,10 @@ RUN pip install keras
 RUN pip install nltk
 RUN pip install numpy
 RUN pip install pandas
-RUN pip install tensorflow
+# x86_64
+#RUN pip install tensorflow
+# aarch64
+RUN pip install tensorflow-aarch64 -f https://tf.kmtea.eu/whl/stable.html
 
 COPY . .
 

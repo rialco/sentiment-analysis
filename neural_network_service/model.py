@@ -1,15 +1,16 @@
 import numpy as np
 import keras
-#### x86_64
+# x86_64
 # from keras.utils import pad_sequences, to_categorical
-#### aarch64
+# aarch64
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.utils import to_categorical
 ####
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from tensorflow.keras.layers import Dense, Dropout, Activation, Embedding, Conv1D, GlobalMaxPooling1D
-from utils import load_encoded_data, parseInputs
+from utils import load_encoded_data, parseInputs, flatten
+import pandas as pd
 
 
 class Model:
@@ -33,18 +34,19 @@ class Model:
     early_stopping_monitor = EarlyStopping(
         monitor='val_loss',
         min_delta=0.001,
-        patience=7,
+        patience=10,
         verbose=0,
         mode='min',
-        restore_best_weights = True
+        restore_best_weights=True
     )
     mcp_save = ModelCheckpoint(
-        './best_models/md.ep{epoch:02d}-loss{val_loss:.2f}-acc{val_accuracy:.2f}.hdf5', 
+        './best_models/md.ep{epoch:02d}-loss{val_loss:.2f}-acc{val_accuracy:.2f}.hdf5',
         save_best_only=True,
         monitor='val_loss',
         mode='min'
     )
-    reduce_lr_loss = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1, min_delta=0.0001, mode='min')
+    reduce_lr_loss = ReduceLROnPlateau(
+        monitor='val_loss', factor=0.1, patience=7, verbose=1, min_delta=0.0001, mode='min')
 
     # print(x_train)
 
@@ -52,11 +54,13 @@ class Model:
         self.model = Sequential()
 
         # Created Embedding (Input) Layer (max_words) --> Convolutional Layer
-        self.model.add(Embedding(self.max_words, self.embedding_dims, input_length=self.maxlen))
-        self.model.add(Dropout(0.2)) # masks various input values
-            
+        self.model.add(
+            Embedding(self.max_words, self.embedding_dims, input_length=self.maxlen))
+        self.model.add(Dropout(0.2))  # masks various input values
+
         # Create the convolutional layer
-        self.model.add(Conv1D(self.filters, self.kernel_size, padding='valid', activation='relu', strides=1))
+        self.model.add(Conv1D(self.filters, self.kernel_size,
+                       padding='valid', activation='relu', strides=1))
 
         # Create the pooling layer
         self.model.add(GlobalMaxPooling1D())
@@ -69,19 +73,20 @@ class Model:
         # Create the output layer (num_classes)
         self.model.add(Dense(self.num_classes))
         self.model.add(Activation('softmax'))
-        
+
         # Add optimization method, loss function and optimization value
         self.model.compile(loss='categorical_crossentropy',
-                    optimizer='adam', metrics=['accuracy'])
-        self.trainModel()
+                           optimizer='adam', metrics=['accuracy'])
 
     def trainModel(self):
         cbs = [self.early_stopping_monitor, self.mcp_save, self.reduce_lr_loss]
 
         self.model.fit(self.x_train, self.y_train, batch_size=self.batch_size,
                        epochs=self.epochs, validation_data=(self.x_test, self.y_test), callbacks=cbs)
-        score = self.model.evaluate(self.x_test, self.y_test, batch_size=self.batch_size)
-        prediction = self.model.predict(self.x_test)
+        score = self.model.evaluate(
+            self.x_test, self.y_test, batch_size=self.batch_size)
+        prediction = self.model.predict(
+            self.x_test, batch_size=self.batch_size)
 
         print(self.model.metrics_names)
         print(score)
@@ -93,35 +98,52 @@ class Model:
             prob_net += p[0]
             prob_neg += p[1]
             prob_pos += p[2]
-        
+
         prob_neg = prob_neg / len(prediction)
         prob_net = prob_net / len(prediction)
         prob_pos = prob_pos / len(prediction)
-        
+
         print('prob neutral:', prob_net)
         print('prob negativa:', prob_neg)
         print('prob positiva:', prob_pos)
+
+    def analyze_results(self, result_set, lucky=False):
+        df = pd.DataFrame(result_set)
+        df.columns = result_set[0].keys()
+        inputs = flatten(df.values.tolist())
+
+        parsedInputs = parseInputs(inputs)
+        parsedInputs = pad_sequences(parsedInputs, maxlen=70, padding='post')
+        if lucky == False:
+            savedModel = keras.models.load_model(
+                './best_models/POTENTIAL_MODEL.ep29-loss0.62-acc0.84.hdf5')
+            savedPred = savedModel.predict(parsedInputs)
+            print('Best model predictions: ', savedPred.argmax(axis=-1))
+            for idx, phrase in enumerate(inputs):
+                print(phrase)
+                print(savedPred[idx].argmax(axis=-1))
 
 
 if __name__ == '__main__':
     classifier = Model()
     x_predictions = parseInputs([
-    "Este es un tweet de prueba",
-    "Ese candidato es un paraco narcotraficante", 
-    "Excelentes noticias que buena persona",
-    "malparido paraco no tiene ni idea de lo que le hace al pais, el y sus subditos",
-    "ese canelo es un pesimo boxeador, no sabe nada del deporte", 
-    "que buenas noticias, te doy las gracias por eso",
-    "Que buena persona eres, te felicito por tu labor y por tu dedicacion, te doy las gracias por tu excelente trabajo",
-    "este es un tweet de prueba, ese candidato es un malparido porque no sabe que esta haciendo con el pais. Esta empeorando la situacion economica de todos los colombianos y tiene el descaro de decir que le va hacer bien al pais cuando todo lo que ha hecho ha sido pesimo y de mala calidad",
-    "que hermosa persona eres, te quiero como amigo y te amo como hermano"
+        "Este es un tweet de prueba",
+        "Ese candidato es un paraco narcotraficante",
+        "Excelentes noticias que buena persona",
+        "malparido paraco no tiene ni idea de lo que le hace al pais, el y sus subditos",
+        "ese canelo es un pesimo boxeador, no sabe nada del deporte",
+        "que buenas noticias, te doy las gracias por eso",
+        "Que buena persona eres, te felicito por tu labor y por tu dedicacion, te doy las gracias por tu excelente trabajo",
+        "este es un tweet de prueba, ese candidato es un malparido porque no sabe que esta haciendo con el pais. Esta empeorando la situacion economica de todos los colombianos y tiene el descaro de decir que le va hacer bien al pais cuando todo lo que ha hecho ha sido pesimo y de mala calidad",
+        "que hermosa persona eres, te quiero como amigo y te amo como hermano"
     ])
 
     x_predictions = pad_sequences(x_predictions, maxlen=70, padding='post')
     prediction = classifier.model.predict(x_predictions)
 
-    savedModel = keras.models.load_model('./best_models/POTENTIAL_MODEL.ep29-loss0.62-acc0.84.hdf5')
+    savedModel = keras.models.load_model(
+        './best_models/POTENTIAL_MODEL.ep29-loss0.62-acc0.84.hdf5')
     savedPred = savedModel.predict(x_predictions)
 
-    print( 'New predictions', prediction.argmax(axis=-1))
-    print( 'Saved model', savedPred.argmax(axis=-1))
+    print('New predictions', prediction.argmax(axis=-1))
+    print('Saved model', savedPred.argmax(axis=-1))

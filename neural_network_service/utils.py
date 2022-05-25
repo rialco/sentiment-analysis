@@ -5,39 +5,40 @@ import pandas as pd
 from dictionary import palabras_negativas, palabras_positivas, palabras_stop, puntuaciones
 nltk.download('punkt')
 
+
 def get_tweet_with_sentiment_pos(input):
-    tweetTokens = nltk.word_tokenize(input, "spanish");
-    cleanedTweet = [];
+    tweetTokens = nltk.word_tokenize(input, "spanish")
+    cleanedTweet = []
     for word in tweetTokens:
         if len(word) == 1:
-            continue;
+            continue
         if word.lower() in palabras_stop:
-            continue;
+            continue
         if word.lower() in puntuaciones:
-            continue;
+            continue
         if word.lower() in (string.lower() for string in palabras_positivas):
-            cleanedTweet.append(word);
-            cleanedTweet.append('POS');
-            continue;
+            cleanedTweet.append(word)
+            cleanedTweet.append('POS')
+            continue
         if word.lower() in (string.lower() for string in palabras_negativas):
-            cleanedTweet.append(word);
-            cleanedTweet.append('NEG');
-            continue;
-        cleanedTweet.append(word);
+            cleanedTweet.append(word)
+            cleanedTweet.append('NEG')
+            continue
+        cleanedTweet.append(word)
         cleanedTweet.append('NET')
-    return cleanedTweet;
+    return cleanedTweet
 
 
-def create_word_embedding( phrases, add_pos_tags = False ):
+def create_word_embedding(phrases, add_pos_tags=False):
     count = 0
-    word_embedding = {} 
+    word_embedding = {}
     encoded_phrases = []
 
     for phrase in phrases:
         cleanPhrase = [phrase]
 
         if add_pos_tags:
-            cleanPhrase = get_tweet_with_sentiment_pos(phrase);
+            cleanPhrase = get_tweet_with_sentiment_pos(phrase)
 
         encoded_phrase = []
         for word in cleanPhrase:
@@ -49,23 +50,23 @@ def create_word_embedding( phrases, add_pos_tags = False ):
     return encoded_phrases
 
 
-def load_encoded_data( data_split = 0.8 ):
+def load_encoded_data(data_split=0.8):
     data = pd.read_csv('./training.csv')
     # data = data.sample(frac=1).reset_index(drop=True)
     classified_tweets = data.values.tolist()
-    
+
     random.shuffle(classified_tweets)
 
     tweets, categories = [], []
     for tweet, category in classified_tweets:
         tweets.append(tweet)
         categories.append(category)
-    
+
     # Word + Punctuation + POS Tags embedding
-    encoded_tweets = create_word_embedding(tweets, add_pos_tags = True)
+    encoded_tweets = create_word_embedding(tweets, add_pos_tags=True)
 
     # Word embedding, ensure you don't add the POS tags
-    encoded_categories = create_word_embedding(categories, add_pos_tags = False)
+    encoded_categories = create_word_embedding(categories, add_pos_tags=False)
 
     # Determine the training sample split point
     training_sample = int(len(encoded_tweets) * data_split)
@@ -77,6 +78,11 @@ def load_encoded_data( data_split = 0.8 ):
     y_test = np.array(encoded_categories[training_sample:], dtype=object)
     return x_train, x_test, y_train, y_test
 
+
 def parseInputs(inputs):
-    encoded_input = create_word_embedding(inputs, add_pos_tags = True)
+    encoded_input = create_word_embedding(inputs, add_pos_tags=True)
     return np.array(encoded_input, dtype=object)
+
+
+def flatten(t):
+    return [item for sublist in t for item in sublist]

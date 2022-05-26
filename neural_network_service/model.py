@@ -1,5 +1,6 @@
 import numpy as np
-import keras
+import pandas as pd
+from tensorflow import keras
 # x86_64
 # from keras.utils import pad_sequences, to_categorical
 # aarch64
@@ -10,7 +11,6 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from tensorflow.keras.layers import Dense, Dropout, Activation, Embedding, Conv1D, GlobalMaxPooling1D
 from utils import load_encoded_data, parseInputs, flatten
-import pandas as pd
 
 
 class Model:

@@ -1,4 +1,4 @@
-FROM python:3.9.13-slim
+FROM python:3.9-slim
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ RUN apt-get -y update \
 
 RUN pip install --upgrade pip
 RUN pip install redis
-RUN pip install keras
+# RUN pip install keras
 RUN pip install nltk
 RUN pip install numpy
 RUN pip install pandas
@@ -22,6 +22,9 @@ RUN pip install sqlalchemy
 # aarch64
 RUN pip install tensorflow-aarch64 -f https://tf.kmtea.eu/whl/stable.html
 RUN pip install psycopg2
+# Next lines are the solution for weird and sudden Type error on tensorflow imports
+RUN pip uninstall --yes protobuf
+RUN pip install --no-binary protobuf protobuf
 
 COPY . .
 

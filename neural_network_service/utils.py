@@ -1,7 +1,7 @@
 import numpy as np
+import pandas as pd
 import nltk
 import random
-import pandas as pd
 from dictionary import palabras_negativas, palabras_positivas, palabras_stop, puntuaciones
 nltk.download('punkt')
 

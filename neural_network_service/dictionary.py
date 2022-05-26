@@ -69,7 +69,7 @@ palabras_positivas = [
     'facil', 'facilidad', 'factible', 'familia', 'fantastico', 'fascinante', 'felicitar', 'felicito', 'feliz', 'fortaleza', 'futuro', 'ganador', 'generosa',
     'generoso', 'genial', 'gracia', 'gracias', 'gratitud', 'hermosa', 'hermoso', 'ideal', 'idolatrar', 'imparcial', 'impresionante',
     'incondicional', 'inolvidable', 'integral', 'inteligencia', 'inteligente', 'intrigante', 'joven', 'juicioso', 'justa', 'justo',
-    'juventud', 'leal', 'lealtad', 'legal', 'legendario', 'lider', 'madurez', 'magico', 'magnifica', 'magnifico', 'maravilloso',
+    'juventud', 'leal', 'lealtad', 'legal', 'legendario', 'lider', 'madurez', 'magico', 'magnifica', 'magnifico', 'maravilloso', 'maravillosa',
     'memorable', 'merecedor', 'meticuloso', 'milagro', 'modesta', 'modesto', 'monumental', 'notable', 'oportunidad', 'optima',
     'optimismo', 'optimista', 'optimo', 'orden', 'ordenada', 'ordenado', 'orgullo', 'orgulloso', 'ostentoso', 'placer', 'positivo',
     'querido', 'querida', 'sabiduria', 'sabio', 'sabroso', 'saludable', 'salvacion', 'salvación', 'santa', 'santo', 'satisfecha',
@@ -87,7 +87,7 @@ palabras_positivas = [
     'valeroso', 'beneficio', 'beneficiario', 'paz', 'admiración', 'admiracion', 'respetuoso', 'respetuosa', 'oportunidades',
     'agradecimiento', 'progresas', 'progresar', 'progreso', 'posible', 'mejores', 'éxitos', 'equidad', 'igualdad', 'activismo',
     'productiva', 'productivo', 'resiliencia', 'celebrar', 'épicos', 'estelar', 'amada', 'amado', 'orgullosos', 'orgullosas', 'celebramos',
-    'futuro', 'voluntarios', 'estimado'
+    'futuro', 'voluntarios', 'estimado', 'buenos'
 ]
 
 # print ('Palabras negativas:', len(palabras_negativas))

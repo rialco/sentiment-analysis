@@ -2,10 +2,10 @@ import numpy as np
 import pandas as pd
 from tensorflow import keras
 # x86_64
-# from keras.utils import pad_sequences, to_categorical
+from keras.utils import pad_sequences, to_categorical
 # aarch64
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.utils import to_categorical
+#from tensorflow.keras.preprocessing.sequence import pad_sequences
+#from tensorflow.keras.utils import to_categorical
 ####
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
@@ -110,7 +110,9 @@ class Model:
     def analyze_results(self, result_set, lucky=False):
         df = pd.DataFrame(result_set)
         df.columns = result_set[0].keys()
-        inputs = flatten(df.values.tolist())
+        cols = ['id', 'cleaned_content']
+        inputs = df[cols[1]].values.tolist()
+        ids = df[cols[0]].values.tolist()
 
         parsedInputs = parseInputs(inputs)
         parsedInputs = pad_sequences(parsedInputs, maxlen=70, padding='post')
@@ -119,9 +121,12 @@ class Model:
                 './best_models/POTENTIAL_MODEL.ep29-loss0.62-acc0.84.hdf5')
             savedPred = savedModel.predict(parsedInputs)
             print('Best model predictions: ', savedPred.argmax(axis=-1))
+            results = []
             for idx, phrase in enumerate(inputs):
-                print(phrase)
-                print(savedPred[idx].argmax(axis=-1))
+                r = {"tweet_id": ids[idx],
+                     "sentiment": savedPred[idx].argmax(axis=-1).item()}
+                results.append(r)
+            return results
 
 
 if __name__ == '__main__':

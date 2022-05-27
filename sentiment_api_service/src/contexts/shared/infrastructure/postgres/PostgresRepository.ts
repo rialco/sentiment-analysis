@@ -1,7 +1,55 @@
 import { DatabaseError } from 'pg';
 import { pgPool } from './PostgresPool.js';
 
+export interface Conditions {
+  table1Fields: string[];
+  table2Fields: string[];
+  operator: string;
+  t1Column: string;
+  t2Column: string;
+  whereValue: string;
+  whereKey: string;
+}
+
 export abstract class PostgresRepository<T> {
+  protected async getQuery(table: string, fields: string[]): Promise<void> {
+    const sql = `
+    SELECT ${fields.toString()} 
+    FROM ${table};
+    `;
+    try {
+      await pgPool.query(sql);
+    } catch (error) {
+      const { code, detail } = error as DatabaseError;
+      console.log(`(ERROR CODE: ${code}) ==> ${detail}`);
+    }
+  }
+
+  protected async getJoinedQuery(
+    table: string,
+    table2: string,
+    conditions: Conditions,
+  ): Promise<any> {
+    const sql = `
+    SELECT ${conditions.table1Fields
+      .map((f) => table + '.' + f)
+      .toString()}, ${conditions.table2Fields
+      .map((f) => table2 + '.' + f)
+      .toString()} 
+    FROM ${table}
+    JOIN ${table2} ON ${table + '.' + conditions.t1Column} ${
+      conditions.operator
+    } ${table2 + '.' + conditions.t2Column}
+    WHERE ${conditions.whereKey} = '${conditions.whereValue}'
+    `;
+    try {
+      return pgPool.query(sql);
+    } catch (error) {
+      const { code, detail } = error as DatabaseError;
+      console.log(`(ERROR CODE: ${code}) ==> ${detail}`);
+    }
+  }
+
   protected async persist(table: string, obj: T): Promise<void> {
     const params = obj as unknown as Record<string, unknown>;
     const sql = `

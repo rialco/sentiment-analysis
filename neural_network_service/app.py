@@ -10,13 +10,12 @@ stream_key = 'events'
 
 def waitForServices():
     model = Model()
-    time.sleep(5)
-
     print('(INFO) ==> Neural network service starting...')
     redisConnection = connect_to_redis()
-    postgreConnection, table = connect_to_postgres()
+    postgreConnection, table, aTable = connect_to_postgres()
 
-    listen_to_redis_stream(redisConnection, postgreConnection, table, model)
+    listen_to_redis_stream(
+        redisConnection, postgreConnection, table, aTable, model)
 
 
 def connect_to_redis():
@@ -33,10 +32,12 @@ def connect_to_postgres():
     metadata = db.MetaData()
     tweetsTable = db.Table(
         'tweets', metadata, autoload=True, autoload_with=engine)
-    return connection, tweetsTable
+    tweetsAnalysis = db.Table('tweets_analysis', metadata,
+                              autoload=True, autoload_with=engine)
+    return connection, tweetsTable, tweetsAnalysis
 
 
-def listen_to_redis_stream(redis_connection, postgre_connection, tweets_table, nn):
+def listen_to_redis_stream(redis_connection, postgre_connection, tweets_table, analysis_table, nn):
     last_id = 0
     sleep_ms = 5000
     while True:
@@ -50,16 +51,20 @@ def listen_to_redis_stream(redis_connection, postgre_connection, tweets_table, n
                 print('            --> ', data)
                 for k, v in data.items():
                     print('Mencion: ', v.decode())
-                    query = db.select([tweets_table.columns.cleaned_content]).where(
+                    query = db.select([tweets_table.columns.id, tweets_table.columns.cleaned_content]).where(
                         tweets_table.columns.mention == v.decode())
                     resultProxy = postgre_connection.execute(query)
-                    resultSet = resultProxy.fetchall()
-                    nn.analyze_results(resultSet)
-
+                    num_results = resultProxy.rowcount
+                    if int(num_results) > 0:
+                        resultSet = resultProxy.fetchall()
+                        analysis_result = nn.analyze_results(resultSet)
+                        upsert_query = db.insert(analysis_table)
+                        postgre_connection.execute(
+                            upsert_query, analysis_result)
         except ConnectionError as e:
             print('(ERROR) ==> Failed to connec to redis: ', format(e))
         except:
-            print('(ERROR) ==> unknwon error ', format(e))
+            print('(ERROR) ==> internal error...')
 
 
 if __name__ == '__main__':

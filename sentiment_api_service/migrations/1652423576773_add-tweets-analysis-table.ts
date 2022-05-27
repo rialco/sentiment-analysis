@@ -7,7 +7,7 @@ export const up = (pgm: MigrationBuilder): void => {
   pgm.sql(`
     CREATE TABLE tweets_analysis (
         id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-        tweet_id BIGINT REFERENCES tweets(id),
+        tweet_id BIGINT REFERENCES tweets(id) UNIQUE,
         sentiment TEXT,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );

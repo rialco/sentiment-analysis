@@ -1,16 +1,15 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 import Redis from 'ioredis';
 
-import { Controller } from "./Controller.js";
+import { Controller } from './Controller.js';
 
 const redis = new Redis({
   host: process.env.REDIS_HOST || 'redis',
   port: parseInt(process.env.REDIS_PORT || '6379'),
-  db: 0
+  db: 0,
 });
 
-export class TweetAnalysisController implements Controller {
-
+export class TweetRequestAnalysisController implements Controller {
   async run(req: Request, res: Response): Promise<void> {
     try {
       const { username } = req.params;

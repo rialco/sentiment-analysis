@@ -1,18 +1,26 @@
 import { Tweet } from '../domain/Tweet.js';
 import { PgTweetRepository } from '../infrastructure/PgTweetRepository.js';
 
-export class TweetSaver {
+export class TweetRepository {
   private repository: PgTweetRepository;
 
   constructor() {
     this.repository = new PgTweetRepository();
   }
 
-  async run(tweet: Tweet): Promise<void> {
+  async getJoinQuery(
+    table: string,
+    table2: string,
+    options: Record<string, unknown>,
+  ) {
+    return this.repository.fetch(table, table2, options);
+  }
+
+  async persist(tweet: Tweet): Promise<void> {
     await this.repository.save(tweet);
   }
 
-  async runBatch(tweets: Tweet[]): Promise<void> {
+  async persistBatch(tweets: Tweet[]): Promise<void> {
     await this.repository.saveBatch(tweets);
   }
 }

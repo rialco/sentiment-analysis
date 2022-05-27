@@ -1,4 +1,7 @@
-import { PostgresRepository } from '../../shared/infrastructure/postgres/PostgresRepository.js';
+import {
+  Conditions,
+  PostgresRepository,
+} from '../../shared/infrastructure/postgres/PostgresRepository.js';
 import { Tweet } from '../domain/Tweet.js';
 import { TweetRepository } from '../domain/TweetRepository.js';
 
@@ -46,5 +49,13 @@ export class PgTweetRepository
   public saveBatch(tweets: Tweet[]): Promise<void> {
     const mappedTweets = this.mapTweets(tweets);
     return this.persistBatch('tweets', mappedTweets);
+  }
+
+  public fetch(
+    table: string,
+    table2: string,
+    options: Record<string, unknown>,
+  ) {
+    return this.getJoinedQuery(table, table2, options as unknown as Conditions);
   }
 }
